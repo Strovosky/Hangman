@@ -7,6 +7,7 @@ from PyQt5 import QtCore, QtGui
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QLineEdit, QLabel, QRadioButton, QVBoxLayout, QHBoxLayout, QGroupBox, QDialog, QButtonGroup, QStackedWidget
 import string
 
+
 class GameMainWindow(QDialog):
     def __init__(self):
         super().__init__()
@@ -15,7 +16,7 @@ class GameMainWindow(QDialog):
     # Initialize parameters of the window.
     def init_main_window(self):
         left, top, width, height = 400, 75, 300, 400
-        window_icon = "C:/Users/Lenovo/Desktop/Python-Programs/Hangman/windowicon.png"
+        window_icon = "/home/strovosky/MyProjects/Hangman/windowicon.png"
         self.setWindowTitle("Strovosky's Hangman")
         self.setWindowIcon(QtGui.QIcon(window_icon))
         self.setGeometry(left, top, width, height)
@@ -25,7 +26,7 @@ class GameMainWindow(QDialog):
         # First, a happy picture on top.
         v_layout = QVBoxLayout()
         label_image = QLabel()
-        pixmap = QtGui.QPixmap("C:/Users/Lenovo/Desktop/Python-Programs/Hangman/Body 1/Nervous.png")
+        pixmap = QtGui.QPixmap("/home/strovosky/MyProjects/Hangman/Body 1/Nervous.png")
         label_image.setPixmap(pixmap)
         label_image.setAlignment(QtCore.Qt.AlignCenter)
         v_layout.addWidget(label_image)
@@ -71,7 +72,7 @@ class GameMainWindow(QDialog):
         # Lets create a list with the categories in the csv file.
         categories = []
         self.category_radiobutton_dic = {}
-        with open("C:/Users/Lenovo/Desktop/Python-Programs/Hangman/hangman_vocab.csv") as csv_file:
+        with open("/home/strovosky/MyProjects/Hangman/hangman_vocab.csv") as csv_file:
             csv_reader = csv.DictReader(csv_file)
             for field in csv_reader.fieldnames:
                 if "Hint" not in field:
@@ -82,7 +83,6 @@ class GameMainWindow(QDialog):
             radio_button = QRadioButton(category)
             self.category_radiobutton_dic[category] = radio_button
             self.category_radiobutton_dic[category].toggled.connect(self.page_opener)
-
 
         # Let's add them to the layout and Buttongroup
         self.buttongroup_options = QButtonGroup()
@@ -101,6 +101,7 @@ class GameMainWindow(QDialog):
         h_layout_for_categories.addWidget(self.groupbox_categories_colum2)
         self.groupbox_categories.setLayout(h_layout_for_categories)
 
+
 class GameWindow(QDialog):
     def __init__(self):
         super().__init__()
@@ -108,7 +109,7 @@ class GameWindow(QDialog):
     # Here I'll return the random word and the starting values of Available Letters.
     def variables_preparator(self, category_input):
         category_words = []
-        with open("C:/Users/Lenovo/Desktop/Python-Programs/Hangman/hangman_vocab.csv") as hangman_csv:
+        with open("/home/strovosky/MyProjects/Hangman/hangman_vocab.csv") as hangman_csv:
             csv_reader = csv.DictReader(hangman_csv)
             for line in csv_reader:
                 if line[category_input.title()] != '' and line[category_input.title()] != None:
@@ -123,20 +124,17 @@ class GameWindow(QDialog):
         self.max_num_strikes = 10
 
         self.rob_pics_dict = {}
-        os.chdir("C:/Users/Lenovo/Desktop/Python-Programs/Hangman/Body 1")
+        os.chdir("/home/strovosky/MyProjects/Hangman/Body 1")
         for direct in os.listdir():
             if direct[0].isdigit() and direct[1].isdigit():
                 num = str(direct[0]) + str(direct[1])
-                self.rob_pics_dict[int(num)] = os.path.join("C:/Users/Lenovo/Desktop/Python-Programs/Hangman/Body 1", str(direct))
+                self.rob_pics_dict[int(num)] = os.path.join("/home/strovosky/MyProjects/Hangman/Body 1", str(direct))
             elif direct[0].isdigit():
-                self.rob_pics_dict[int(direct[0])] = os.path.join("C:/Users/Lenovo/Desktop/Python-Programs/Hangman/Body 1", str(direct))
-        print(self.rob_pics_dict.keys())
-        print("Variables preparator works.")
-
+                self.rob_pics_dict[int(direct[0])] = os.path.join("/home/strovosky/MyProjects/Hangman/Body 1", str(direct))
 
     def init_window(self):
         left, top, width, height = 30, 30, 1000, 700
-        window_icon = "C:/Users/Lenovo/Desktop/Python-Programs/Hangman/windowicon.png"
+        window_icon = "/home/strovosky/MyProjects/Hangman/windowicon.png"
         self.setWindowTitle("Strovosky's Hangman")
         self.setWindowIcon(QtGui.QIcon(window_icon))
         self.setGeometry(left, top, width, height)
@@ -163,7 +161,6 @@ class GameWindow(QDialog):
 
         self.show()
 
-        print("init_window works.")
 
     def create_layout(self):
         self.groupbox_buttons = QGroupBox()
@@ -174,7 +171,7 @@ class GameWindow(QDialog):
 
         self.pic_label = QLabel()
         #self.pic_label.setMinimumSize(50,50)
-        pixmap = QtGui.QPixmap("C:/Users/Lenovo/Desktop/Python-Programs/Hangman/Body 1/0.png")
+        pixmap = QtGui.QPixmap("/home/strovosky/MyProjects/Hangman/Body 1/0.png")
         self.pic_label.setPixmap(pixmap)
         self.pic_label.setAlignment(QtCore.Qt.AlignCenter)
         h_layout.addWidget(self.pic_label)
@@ -191,7 +188,6 @@ class GameWindow(QDialog):
                 else:
                     x_word += "#"
 
-            print("x_word_generator works.")
             return x_word
 
         self.secret_word = x_word_generator(self.word)
@@ -201,9 +197,6 @@ class GameWindow(QDialog):
         self.secret_word_label.setStyleSheet("background-color: #0BA99A")
         self.secret_word_label.setAlignment(QtCore.Qt.AlignCenter)
         v_layout.addWidget(self.secret_word_label)
-
-        print("Create layout works.")
-        print("The secret words is " + self.word)
 
         self.groupbox_buttons.setLayout(v_layout)
 
@@ -265,7 +258,6 @@ class GameWindow(QDialog):
         self.full_word.returnPressed.connect(self.i_k_t_w_game_runner)
         self.h_layout_i_know_the_word.addWidget(self.full_word)
 
-
         # Here we enable the line_edit when we press the button I know the word.
         def line_edit_i_k_t_w_enabler():
             self.full_word.setDisabled(False)
@@ -275,9 +267,6 @@ class GameWindow(QDialog):
         self.buttongroup_alphabet.buttonClicked[int].connect(self.game_runner)
 
         self.groupbox_i_know_the_word.setLayout(self.h_layout_i_know_the_word)
-
-        print("button_creator works.")
-
 
     def game_runner(self, id):
 
@@ -305,7 +294,7 @@ class GameWindow(QDialog):
 
             # If we got the full word we win
             if self.secret_word_label.text() == self.word:
-                pixmap = QtGui.QPixmap("C:/Users/Lenovo/Desktop/Python-Programs/Hangman/Body 1/Winner.png")
+                pixmap = QtGui.QPixmap("/home/strovosky/MyProjects/Hangman/Body 1/Winner.png")
                 self.pic_label.setPixmap(pixmap)
                 self.secret_word_label.setText(self.word)
                 for button in self.buttongroup_alphabet.buttons():
@@ -326,7 +315,7 @@ class GameWindow(QDialog):
         elif not self.buttongroup_alphabet.button(id).text() in self.word:
             self.strikes += 1
             if self.strikes == self.max_num_strikes:
-                pixmap = QtGui.QPixmap("C:/Users/Lenovo/Desktop/Python-Programs/Hangman/Body 1/Sad.png")
+                pixmap = QtGui.QPixmap("/home/strovosky/MyProjects/Hangman/Body 1/Sad.png")
                 self.pic_label.setPixmap(pixmap)
                 self.secret_word_label.setText(self.word)
                 for button in self.buttongroup_alphabet.buttons():
@@ -341,7 +330,7 @@ class GameWindow(QDialog):
 
     def i_k_t_w_game_runner(self):
         if self.full_word.text().upper() == self.word:
-            pixmap = QtGui.QPixmap("C:/Users/Lenovo/Desktop/Python-Programs/Hangman/Body 1/Winner.png")
+            pixmap = QtGui.QPixmap("/home/strovosky/MyProjects/Hangman/Body 1/Winner.png")
             self.pic_label.setPixmap(pixmap)
             self.secret_word_label.setText(self.word)
             for button in self.buttongroup_alphabet.buttons():
@@ -350,7 +339,7 @@ class GameWindow(QDialog):
             self.next_button_creator()
 
         else:
-            pixmap = QtGui.QPixmap("C:/Users/Lenovo/Desktop/Python-Programs/Hangman/Body 1/Sad.png")
+            pixmap = QtGui.QPixmap("/home/strovosky/MyProjects/Hangman/Body 1/Sad.png")
             self.pic_label.setPixmap(pixmap)
             self.secret_word_label.setText(self.word)
             for button in self.buttongroup_alphabet.buttons():
@@ -361,13 +350,12 @@ class GameWindow(QDialog):
     def next_button_creator(self):
         # Let's create the button
         next_button = QPushButton("Next")
-        next_button.setIcon(QtGui.QIcon("C:/Users/Lenovo/Pictures/Saved Pictures/Rob Stickers/Here You Go.png"))
+        next_button.setIcon(QtGui.QIcon("/home/strovosky/MyProjects/Hangman/Here You Go.png"))
         next_button.setIconSize(QtCore.QSize(50, 50))
         next_button.setStyleSheet("background-color: #248AAE")
 
         # It's next to the line edit (I hope,hehe)
         self.h_layout_i_know_the_word.addWidget(next_button)
-        print("This part inside gets run")
 
 
 app = QApplication(sys.argv)
